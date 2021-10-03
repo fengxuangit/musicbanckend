@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.evalshell.service.HomeService">
+    <select id="findAll"  resultMap="HomeResultMap">
+        select h.id,h.image_id,h.song_id,s.id as sid,s.name,s.url,s.key,s.isvip,i.id as image_id, i.key as image_key, i.url as  image_url from home h INNER JOIN song s ON h.song_id=s.id inner join image i on h.image_id=i.id
+    </select>
+    <resultMap id="HomeResultMap" type="com.evalshell.bean.model.Home">
+        <id column="id" property="id"></id>
+        <association property="image" javaType="com.evalshell.bean.model.Image">
+            <id property="id" column="image_id"/>
+            <result property="key" column="image_key"/>
+            <result property="url" column="image_url"/>
+        </association>
+        <association property="song" javaType="com.evalshell.bean.model.Song">
+            <id property="id" column="sid"/>
+           <result property="name" column="name"/>
+           <result property="isvip" column="isvip"/>
+           <result property="key" column="key"/>
+           <result property="url" column="url"/>
+        </association>
+    </resultMap>
+
+    <resultMap id="getHomeRecommendResultMap" type="com.evalshell.bean.model.HomeRecommend">
+        <id column="song_id" property="song_id"></id>
+        <result property="key" column="key"/>
+        <result property="url" column="url"/>
+        <result property="isvip" column="isvip"/>
+        <result property="recommend_name" column="recommend_name"/>
+        <result property="name" column="name"/>
+        <result property="song_key" column="song_key"/>
+        <result property="song_url" column="song_url"/>
+        <result property="describe" column="describe"/>
+    </resultMap>
+    <sql id="recommend_fields">s.id as song_id,im.key,im.url,hr.name as recommend_name,s.name,s.`describe`,s.key as song_key, s.url as song_url,s.isvip</sql>
+    <sql id="recommend_inner_join_fields">home_recommend hr
+                INNER JOIN home_recommend_relation hrr ON hr.id = hrr.home_recommend_id
+                INNER JOIN song s ON hrr.song_id=s.id
+                INNER JOIN collection c ON s.coll_id=c.id
+                INNER JOIN image im ON c.cover_image_id = im.id</sql>
+    <select id="getHomeRecommend" resultMap="getHomeRecommendResultMap">
+        SELECT
+            <include refid="recommend_fields"/>
+        FROM
+        <include refid="recommend_inner_join_fields"/>
+        where hr.type='home'
+    </select>
+
+<!--    根据首页的分类获取首页的推荐-->
+    <select id="getHomeRecommendByName" resultMap="getHomeRecommendResultMap">
+        SELECT
+        <include refid="recommend_fields"/>
+        FROM
+        <include refid="recommend_inner_join_fields"/>
+        WHERE hr.type='home'
+        <if test="name != null" >
+            and hr.name=#{name}
+        </if>
+    </select>
+
+    <select id="getCategoryRecommendByName" resultMap="getHomeRecommendResultMap">
+        SELECT
+        <include refid="recommend_fields"/>
+        FROM
+        <include refid="recommend_inner_join_fields"/>
+        WHERE hr.type='discovery'
+        <if test="name != null" >
+            and hr.name=#{name}
+        </if>
+    </select>
+
+
+    <resultMap id="getRecommendCategory" type="com.evalshell.bean.model.RecommendCategory">
+        <id column="id" property="id"></id>
+        <result property="name" column="name"/>
+        <result property="type" column="type"/>
+    </resultMap>
+    <select id="getRecommendCategory" resultMap="getRecommendCategory">
+        select id, name, type from home_recommend ;
+    </select>
+
+
+    <resultMap id="getAllCategoryMap" type="com.evalshell.bean.model.Category">
+        <id column="id" property="id"></id>
+        <result property="name" column="name"/>
+        <result property="parent_category_id" column="parent_category_id"/>
+    </resultMap>
+    <select id="getAllCategory" resultMap="getAllCategoryMap">
+        select id, name, parent_category_id from category order by `order`,id ;
+    </select>
+
+
+    <resultMap id="getCategoryByIdMap" type="com.evalshell.bean.model.Category">
+        <id column="id" property="id"></id>
+        <result property="name" column="name"/>
+        <result property="parent_category_id" column="parent_category_id"/>
+    </resultMap>
+    <select id="getCategoryById" resultMap="getCategoryByIdMap">
+        select * from category
+        WHERE 1=1
+        <if test="id != null" >
+            and id=#{category_id}
+        </if>
+    </select>
+
+
+    <resultMap id="getSongByCategoryIdMap" type="com.evalshell.bean.model.Song">
+        <id property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="key" column="key"/>
+        <result property="url" column="url"/>
+        <result property="isvip" column="isvip"/>
+        <result property="describe" column="describe"/>
+        <result property="category_id" column="category_id"/>
+        <result property="insert_tm" column="insert_tm"/>
+        <result property="update_tm" column="update_tm"/>
+    </resultMap>
+    <select id="getSongByCategoryId" resultMap="getSongByCategoryIdMap">
+        select * from song where 1=1
+        <if test="category_id != null" >
+             and category_id=#{category_id}
+        </if>
+        order by id
+    </select>
+
+
+    <resultMap id="getSongByParentCategoryIdMap" type="com.evalshell.bean.model.Song">
+        <id property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="key" column="key"/>
+        <result property="url" column="url"/>
+        <result property="isvip" column="isvip"/>
+        <result property="describe" column="describe"/>
+        <result property="category_id" column="category_id"/>
+        <result property="insert_tm" column="insert_tm"/>
+        <result property="update_tm" column="update_tm"/>
+    </resultMap>
+    <select id="getSongByParentCategoryId" resultMap="getSongByParentCategoryIdMap">
+        select * from song s INNER JOIN category c ON s.category_id=c.id  where 1=1
+        <if test="category_id != null" >
+            and c.parent_category_id=#{category_id}
+        </if>
+        order by s.id
+    </select>
+
+    <insert id="favouriteCreate" parameterType="com.evalshell.bean.model.Favourite" useGeneratedKeys="true" keyProperty="id" >
+        replace into favourite (user_id, song_id, insert_tm, update_tm
+        )
+        values ( #{user_id}, #{song_id}, #{insert_tm},#{update_tm}
+               )
+    </insert>
+
+    <delete id="delFavourite">
+        delete from favourite where user_id=#{user_id} and song_id=#{song_id}
+    </delete>
+
+
+<!--    association标签必须放在resultMap 最后一个 不然会报错-->
+    <resultMap id="getFavouriteListByUserIdMap" type="com.evalshell.bean.serializer.FavouriteListSerializer">
+        <id property="id" column="id"/>
+        <result property="user_id" column="user_id"/>
+        <result property="insert_tm" column="insert_tm"/>
+        <result property="update_tm" column="update_tm"/>
+        <association property="song" column="song_id"  javaType="com.evalshell.bean.model.Song">
+<!--            <id property="id" column="song_id"/>-->
+            <result property="name" column="name"/>
+            <result property="key" column="key"/>
+            <result property="url" column="url"/>
+        </association>
+    </resultMap>
+    <select id="getFavouriteListByUserId" resultMap="getFavouriteListByUserIdMap">
+        select f.*,s.name,s.key,s.url,s.name,s.id as song_id from favourite f INNER JOIN song s ON f.song_id=song_id WHERE 1=1
+        <if test="user_id != null" >
+            and user_id=#{user_id}
+        </if>
+        order by id desc
+    </select>
+
+
+    <resultMap id="SettingMap" type="com.evalshell.bean.model.Setting">
+        <id property="id" column="id"/>
+        <result property="payinfo" column="payinfo"/>
+    </resultMap>
+    <select id="getSetting" resultMap="SettingMap">
+        select id,payinfo from setting where id=1
+    </select>
+
+</mapper>

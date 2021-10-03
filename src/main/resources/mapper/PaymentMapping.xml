@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.evalshell.service.PayMentService">
+    <insert id="createOrder" parameterType="com.evalshell.bean.model.OrderInfo" useGeneratedKeys="true" keyProperty="id" >
+        insert into orderinfo (user_id, pay_no, type, money,  status, insert_tm, update_tm
+        )
+        values ( #{user_id}, #{pay_no},#{type}, #{money}, #{status}, #{insert_tm},#{update_tm}
+        )
+    </insert>
+
+
+
+    <resultMap id="getOrderByPayNoMap" type="com.evalshell.bean.model.OrderInfo">
+        <id property="id" column="id"/>
+        <result property="user_id" column="user_id"/>
+        <result property="pay_no" column="pay_no"/>
+        <result property="type" column="type"/>
+        <result property="money" column="money"/>
+        <result property="status" column="status"/>
+        <result property="pay_tm" column="pay_tm"/>
+        <result property="insert_tm" column="insert_tm"/>
+        <result property="update_tm" column="update_tm"/>
+    </resultMap>
+    <select id="getOrderByPayNo" resultMap="getOrderByPayNoMap">
+        select * from orderinfo where pay_no=#{pay_no,jdbcType=VARCHAR}
+    </select>
+
+    <update id="updateOrder" parameterType="com.evalshell.bean.model.OrderInfo">
+        update orderinfo
+        <set>
+            <if test="status != null">
+                name = #{status, jdbcType=Integer},
+            </if>
+            <if test="pay_tm != null">
+                pay_tm = #{pay_tm, jdbcType=DATE},
+            </if>
+        </set>
+        where pay_no = #{pay_no, jdbcType=VARCHAR}
+    </update>
+</mapper>

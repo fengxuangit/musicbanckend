@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.evalshell.service.CalendarService">
+    <select id="findCalendarByDate" parameterType="java.util.Date"  resultMap="findCalendarByDateResultMap">
+        select c.id,c.image_id,c.date,c.word,c.insert_tm,c.update_tm,im.id as image_id,im.key as image_key,im.url as image_url from calendar c inner join image im on image_id=c.image_id where c.date=#{date}
+    </select>
+    <resultMap id="findCalendarByDateResultMap" type="com.evalshell.bean.model.Calendar">
+        <id column="id" property="id"></id>
+        <result property="date" column="date"/>
+        <result property="word" column="word"/>
+        <result property="insert_tm" column="insert_tm"/>
+        <result property="update_tm" column="update_tm"/>
+        <association property="image" javaType="com.evalshell.bean.model.Image">
+            <id property="id" column="image_id"/>
+            <result property="key" column="image_key"/>
+            <result property="url" column="image_url"/>
+        </association>
+    </resultMap>
+
+
+
+    <select id="findCalendarByDate" resultMap="findCalendarByDateMap">
+        select c.*,im.key,im.url from calendar c INNER JOIN image im ON c.image_id=im.id where 1=1
+        <if test="date != null" >
+            and `date`=#{date}
+        </if>
+    </select>
+    <resultMap id="findCalendarByDateMap" type="com.evalshell.bean.model.Calendar">
+        <id property="id" column="id"/>
+        <result property="date" column="date"/>
+        <result property="word" column="word"/>
+        <result property="insert_tm" column="insert_tm"/>
+        <result property="update_tm" column="update_tm"/>
+    </resultMap>
+</mapper>

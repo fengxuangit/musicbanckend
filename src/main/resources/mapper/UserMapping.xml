@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.evalshell.service.UserService">
+    <insert id="create" parameterType="com.evalshell.bean.model.User" useGeneratedKeys="true" keyProperty="id" >
+        insert into user (nickname, openid,
+                              avatarUrl, gender, country, province,
+                              city, unionid, insert_tm, update_tm
+        )
+        values ( #{nickname,jdbcType=VARCHAR}, #{openid,jdbcType=VARCHAR},
+                #{avatarUrl,jdbcType=CHAR}, #{gender,jdbcType=INTEGER}, #{country,jdbcType=VARCHAR}, #{province,jdbcType=VARCHAR},
+                #{city,jdbcType=VARCHAR}, #{unionid,jdbcType=VARCHAR}, #{insert_tm},#{update_tm}
+               )
+    </insert>
+
+    <resultMap id="findUserByOpenIdMap" type="com.evalshell.bean.model.User">
+        <id column="id" property="id"></id>
+        <result property="nickname" column="nickname"/>
+        <result property="openid" column="openid"/>
+        <result property="avatarUrl" column="avatarUrl"/>
+        <result property="gender" column="gender"/>
+        <result property="country" column="country"/>
+        <result property="province" column="province"/>
+        <result property="city" column="city"/>
+        <result property="unionid" column="unionid"/>
+        <result property="insert_tm" column="insert_tm"/>
+        <result property="update_tm" column="update_tm"/>
+    </resultMap>
+    <select id="findUserByOpenId" resultMap="findUserByOpenIdMap">
+        select id, nickname,openid,avatarUrl,gender,country,province,city,unionid,insert_tm,update_tm from `user`
+        WHERE 1=1
+        <if test="openid != null" >
+            and openid=#{openid}
+        </if>
+    </select>
+
+        <resultMap id="getPlayRecordListByUserIdMap" type="com.evalshell.bean.model.PlayRecord">
+        <id property="id" column="id"/>
+        <result property="user_id" column="user_id"/>
+        <association property="song" column="song_id"  javaType="com.evalshell.bean.model.Song">
+            <!--            <id property="id" column="song_id"/>-->
+            <result property="name" column="name"/>
+            <result property="key" column="key"/>
+            <result property="url" column="url"/>
+        </association>
+    </resultMap>
+    <select id="getPlayRecordListByUserId" resultMap="getPlayRecordListByUserIdMap">
+        select p.*,s.name,s.key,s.url,s.name,s.id as song_id from play_record p INNER JOIN song s ON p.song_id=song_id WHERE 1=1
+        <if test="user_id != null" >
+            and user_id=#{user_id}
+        </if>
+        order by id desc
+    </select>
+
+    <update id="update">
+        update user
+        <set>
+            <if test="isvip != null">
+                isvip = #{isvip, jdbctype=Integer},
+            </if>
+            <if test="vip_expretime != null">
+                vip_expretime = #{vip_expretime, jdbctype=DATE},
+            </if>
+        </set>
+        where id = #{user_id}
+    </update>
+
+</mapper>
