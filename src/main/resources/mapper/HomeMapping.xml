@@ -37,8 +37,7 @@
     <sql id="recommend_inner_join_fields">home_recommend hr
                 INNER JOIN home_recommend_relation hrr ON hr.id = hrr.home_recommend_id
                 INNER JOIN song s ON hrr.song_id=s.id
-                INNER JOIN collection c ON s.coll_id=c.id
-                INNER JOIN image im ON c.cover_image_id = im.id</sql>
+                INNER JOIN image im ON s.image_id = im.id</sql>
     <select id="getHomeRecommend" resultMap="getHomeRecommendResultMap">
         SELECT
             <include refid="recommend_fields"/>
