@@ -4,7 +4,7 @@
 获取支付
 --------------------------------
 
-- GET categorys
+- GET wechat/wxjspay
 
 :type字段说明
 - month 月度

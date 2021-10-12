@@ -225,4 +225,35 @@
             <result property="update_tm" column="update_tm"/>
         </association>
     </resultMap>
+
+
+
+    <resultMap id="getSongByIdMap" type="com.evalshell.bean.model.Song">
+        <id property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="isvip" column="isvip"/>
+        <result property="describe" column="describe"/>
+        <result property="image_url" column="image_url"/>
+        <result property="song_url" column="url"/>
+        <result property="category_id" column="category_id"/>
+    </resultMap>
+    <select id="getSongById" resultMap="getSongByIdMap">
+        select
+        <include refid="Song_Image_fields"/>,s.url
+        from
+        <include refid="Song_Image_JOIN_fields"/>
+        where 1=1
+        <if test="id != null" >
+            and s.id=#{id}
+        </if>
+        order by id desc
+    </select>
+
+
+    <insert id="addPlayRecord" parameterType="com.evalshell.bean.model.PlayRecord" useGeneratedKeys="true" keyProperty="id" >
+        insert into play_record (user_id, song_id, insert_tm, update_tm
+        )
+        values ( #{user_id}, #{song_id}, #{insert_tm},#{update_tm}
+        )
+    </insert>
 </mapper>

@@ -449,3 +449,95 @@ type字段为home的时候，就是首页的分类，如果是discovery就是推
                 ]
             }
         ]
+
+搜索名称
+--------------------------------
+
+- GET home/search
+
+- 请求参数::
+
+    {
+        "name": "记忆力脑波音", # 搜索的名称 | yes |字符型
+    }
+
+- 返回参数::
+
+    {
+        "data": {
+            "total": 1,
+            "list": [
+                {
+                    "id": 0,
+                    "image": {
+                        "id": 17,
+                        "url": "http://music.gitsort.com/image/10/09/fce927f3eeb0a16df010732ce2a06bbc.jpg"
+                    },
+                    "song": {
+                        "id": 12,
+                        "name": "记忆力脑波音",
+                        "isvip": 0,
+                        "describe": null,
+                        "image_url": null,
+                        "song_url": null,
+                        "category_id": 13,
+                        "insert_tm": "2021-09-11T21:22:21.000+08:00",
+                        "update_tm": "2021-09-11T21:22:21.000+08:00"
+                    }
+                }
+            ],
+            "pageNum": 1,
+            "pageSize": 10,
+            "size": 1,
+            "startRow": 1,
+            "endRow": 1,
+            "pages": 1,
+            "prePage": 0,
+            "nextPage": 0,
+            "isFirstPage": true,
+            "isLastPage": true,
+            "hasPreviousPage": false,
+            "hasNextPage": false,
+            "navigatePages": 8,
+            "navigatepageNums": [
+                1
+            ],
+            "navigateFirstPage": 1,
+            "navigateLastPage": 1
+        },
+        "message": "success",
+        "status": 200
+    }
+
+
+获取歌曲地址
+--------------------------------
+
+- GET home/getSong
+
+这个接口请求一次，也算是一次播放记录！
+
+- 请求参数::
+
+    {
+        "id": 1, # 歌曲的ID | yes | 整型
+        "user_id": 10 #用户ID  | yes | 整型
+    }
+
+- 返回参数::
+
+    {
+        "data": {
+            "id": 2,
+            "name": "海浪",
+            "isvip": 0,
+            "describe": "5-10分钟",
+            "image_url": "http://music.gitsort.com/image/%E6%B5%B7%E6%B5%AA.jpg",
+            "song_url": "http://music.gitsort.com/music/%E9%A6%96%E9%A1%B5/%E7%96%97%E6%84%88%E6%B5%B7%E6%B5%AA%E5%A3%B0.mp3",
+            "category_id": 7,
+            "insert_tm": null,
+            "update_tm": null
+        },
+        "message": "success",
+        "status": 200
+    }

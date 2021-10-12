@@ -9,6 +9,7 @@ import com.evalshell.bean.serializer.FavouriteListSerializer;
 import com.evalshell.bean.serializer.HomeRecommendBase;
 import com.evalshell.bean.serializer.HomeRecommendSerializer;
 import com.evalshell.service.CalendarService;
+import com.evalshell.service.UserService;
 import com.evalshell.service.impl.CalendarServiceImpl;
 import com.evalshell.service.impl.HomeDaoImpl;
 import com.evalshell.utils.CommonUtil;
@@ -33,6 +34,9 @@ public class HomeController {
 
     @Autowired
     HomeDaoImpl homeService;
+
+    @Autowired
+    UserService userService;
 
     @Autowired
     CalendarServiceImpl calendarService;
@@ -156,5 +160,19 @@ public class HomeController {
     public Object getSetting(){
         Setting setting = homeService.getSetting();
         return ResponseUtil.make_response(setting, "success", 200);
+    }
+
+        @RequestMapping(value = "/getsong", method = {RequestMethod.GET})
+    public Object getSongUrl(@RequestParam(value = "user_id") Integer user_id, @RequestParam(value = "id") Integer id){
+        User user = userService.findUserById(user_id);
+        if (user != null && user.getIsvip() != 0){
+            Song song = homeService.getSongById(id);
+            PlayRecord playRecord = new PlayRecord();
+            playRecord.setUser_id(user_id);
+            playRecord.setSong_id(song.getId());
+            homeService.addPlayRecord(playRecord);
+            return ResponseUtil.make_response(song, "success", 200);
+        }
+        return ResponseUtil.make_response(null, "你不是会员！", 100);
     }
 }

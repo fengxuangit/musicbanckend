@@ -23,6 +23,8 @@
         <result property="country" column="country"/>
         <result property="province" column="province"/>
         <result property="city" column="city"/>
+        <result property="isvip" column="isvip"/>
+        <result property="vip_expiretime" column="vip_expiretime"/>
         <result property="unionid" column="unionid"/>
         <result property="insert_tm" column="insert_tm"/>
         <result property="update_tm" column="update_tm"/>
@@ -66,4 +68,12 @@
         where id = #{user_id}
     </update>
 
+
+    <select id="findUserById" resultMap="findUserByOpenIdMap">
+        select id, nickname,openid,avatarUrl,gender,country,province,city,unionid,isvip,vip_expiretime, insert_tm,update_tm from `user`
+        WHERE 1=1
+        <if test="id != null" >
+            and id=#{id}
+        </if>
+    </select>
 </mapper>

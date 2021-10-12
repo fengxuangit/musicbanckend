@@ -38,4 +38,8 @@ public interface HomeService {
     List<Song> getSongByParentCategoryId(Integer category_id);
 
     List<Song> searchSong(String name);
+
+    Song getSongById(Integer id);
+
+    void addPlayRecord(PlayRecord playRecord);
 }

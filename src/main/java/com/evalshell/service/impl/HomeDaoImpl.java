@@ -137,4 +137,17 @@ public class HomeDaoImpl implements HomeService {
     public List<Song> searchSong(String name) {
         return homeService.searchSong(name);
     }
+
+    @Override
+    public Song getSongById(Integer id) {
+        return homeService.getSongById(id);
+    }
+
+    @Override
+    public void addPlayRecord(PlayRecord playRecord) {
+        Date date = new Date();
+        playRecord.setInsert_tm(date);
+        playRecord.setUpdate_tm(date);
+        homeService.addPlayRecord(playRecord);
+    }
 }
