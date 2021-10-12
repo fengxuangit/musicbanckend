@@ -49,11 +49,16 @@ public class UserController {
         }
         String openid = (String) object.get("openid");
         User user = userServiceImpl.findUserByOpenId(openid);
-        return ResponseUtil.make_response(user, "success", 201);
+        if (user != null){
+            return ResponseUtil.make_response(user, "success", 201);
+        }else{
+            return ResponseUtil.make_response(openid, "success", 100);
+        }
+
     }
 
 
-    @RequestMapping(value = "/create")
+    @RequestMapping(value = "/create", method = {RequestMethod.POST})
     public Object create(@RequestBody User user){
         userServiceImpl.create(user);
         return ResponseUtil.make_response(user, "success", 201);

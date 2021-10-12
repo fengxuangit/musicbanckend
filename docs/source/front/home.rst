@@ -18,22 +18,20 @@
         "data": [
             {
                 "id": 1,
-                "image": {  # 图片对象
-                    "id": 1, #图片ID
-                    "key": "asda", # 七牛云的key
-                    "url": "https://file.zuopin.cloud/Fsod1dlzAyQ2kIkhcidFwJ9WVqiX," #总的地址
+                "image": {
+                    "id": 1,
+                    "url": "http://music.gitsort.com/image/%E4%B8%8B%E9%9B%A8.jpg"
                 },
                 "song": {
-                    "id": 1, #歌曲名称
-                    "name": "起风了", #歌曲名称
-                    "describe": null, #歌曲表述
-                    "key": "asda", # 歌曲封面图的key
-                    "url": "https://mp32.9ku.com/upload/128/2018/02/09/875689.mp3", # 歌曲封面图的实际地址
-                    "song_key": null,   # 歌曲的key
-                    "song_url": null,# 歌曲的实际地址
-                    "category_id": 0, #分类ID
-                    "insert_tm": null, # 插入时间
-                    "update_tm": null # 更新时间
+                    "id": 1,
+                    "name": "雨滴",
+                    "isvip": 0,
+                    "describe": null,
+                    "url": "http://music.gitsort.com/music/%E9%A6%96%E9%A1%B5/%E9%9B%A8%E6%BB%B45%E5%88%86%E9%92%9F%E7%89%88%E6%9C%AC.mp3",
+                    "song_url": null,
+                    "category_id": 0,
+                    "insert_tm": null,
+                    "update_tm": null
                 }
             },
         ],
@@ -97,48 +95,21 @@
                 "data": [
                     {
                         "song_id": 1,
-                        "song_key": "asda",
-                        "song_url": "https://mp32.9ku.com/upload/128/2018/02/09/875689.mp3",
-                        "key": "asda",
-                        "url": "https://file.zuopin.cloud/Fsod1dlzAyQ2kIkhcidFwJ9WVqiX,",
-                        "name": "起风了",
+                        "isvip": 0,
+                        "image_url": null,
+                        "name": "雨滴",
                         "describe": "5-10分钟"
                     },
                     {
                         "song_id": 2,
-                        "song_key": "asd",
-                        "song_url": "https://mp32.9ku.com/upload/128/2018/02/09/875689.mp3",
-                        "key": "asd",
-                        "url": "https://file.zuopin.cloud/Fsod1dlzAyQ2kIkhcidFwJ9WVqiX,",
-                        "name": "减压曲1",
+                        "isvip": 0,
+                        "image_url": null,
+                        "name": "海浪",
                         "describe": "5-10分钟"
                     }
                 ]
             },
-            {
-                "name": "情绪调节",
-                "data": [
-                    {
-                        "song_id": 3,
-                        "song_key": "asd",
-                        "song_url": "https://mp32.9ku.com/upload/128/2018/02/09/875689.mp3",
-                        "key": "asd",
-                        "url": "https://file.zuopin.cloud/Fsod1dlzAyQ2kIkhcidFwJ9WVqiX,",
-                        "name": "减压曲2",
-                        "describe": "5-10分钟"
-                    },
-                    {
-                        "song_id": 1,
-                        "song_key": "asda",
-                        "song_url": "https://mp32.9ku.com/upload/128/2018/02/09/875689.mp3",
-                        "key": "asda",
-                        "url": "https://file.zuopin.cloud/Fsod1dlzAyQ2kIkhcidFwJ9WVqiX,",
-                        "name": "起风了",
-                        "describe": "5-10分钟"
-                    }
-                ]
-            }
-        ],
+          ],
         "message": "success",
         "status": 200
     }
@@ -201,10 +172,8 @@ type字段为home的时候，就是首页的分类，如果是discovery就是推
             "list": [
                 {
                     "song_id": 3, #歌曲ID
-                    "song_key": "asd", #歌曲的Key
-                    "song_url": "https://mp32.9ku.com/upload/128/2018/02/09/875689.mp3", #歌曲的URL
-                    "key": "asd", #图片的key
-                    "url": "https://file.zuopin.cloud/Fsod1dlzAyQ2kIkhcidFwJ9WVqiX,", #图片的url
+                    "isvip": 0 | 1,
+                    "image_url": "https://file.zuopin.cloud/Fsod1dlzAyQ2kIkhcidFwJ9WVqiX,", #图片的url
                     "recommend_name": "情绪调节", #首页推荐的名称
                     "name": "减压曲2", #歌曲名
                     "describe": "5-10分钟" #歌曲描述
@@ -257,15 +226,12 @@ type字段为home的时候，就是首页的分类，如果是discovery就是推
             "list": [
                 {
                     "song_id": 3, #歌曲ID
-                    "song_key": "asd", #歌曲的Key
-                    "song_url": "https://mp32.9ku.com/upload/128/2018/02/09/875689.mp3", #歌曲的URL
-                    "key": "asd", #图片的key
-                    "url": "https://file.zuopin.cloud/Fsod1dlzAyQ2kIkhcidFwJ9WVqiX,", #图片的url
+                    "isvip": 0 | 1,
+                    "image_url": "https://file.zuopin.cloud/Fsod1dlzAyQ2kIkhcidFwJ9WVqiX,", #图片的url
                     "recommend_name": "情绪调节", #首页推荐的名称
                     "name": "减压曲2", #歌曲名
                     "describe": "5-10分钟" #歌曲描述
                 },
-
             ],
             "pageNum": 1, #当前页数
             "pageSize": 10, #当前页码
@@ -316,11 +282,11 @@ type字段为home的时候，就是首页的分类，如果是discovery就是推
             "total": 2, #总共的条数
             "list": [
                 {
-                    "song_id": 3, #歌曲ID
-                    "song_key": "asd", #歌曲的Key
-                    "song_url": "https://mp32.9ku.com/upload/128/2018/02/09/875689.mp3", #歌曲的URL
+                    "id": 3, #歌曲ID
+                    "song_url": null
                     "key": "asd", #图片的key
-                    "url": "https://file.zuopin.cloud/Fsod1dlzAyQ2kIkhcidFwJ9WVqiX,", #图片的url
+                    "isvip": 0 | 1,
+                    "image_url": "https://file.zuopin.cloud/Fsod1dlzAyQ2kIkhcidFwJ9WVqiX,", #图片的url
                     "recommend_name": "情绪调节", #首页推荐的名称
                     "name": "减压曲2", #歌曲名
                     "describe": "5-10分钟" #歌曲描述
@@ -371,22 +337,21 @@ type字段为home的时候，就是首页的分类，如果是discovery就是推
         "total": 3,
         "list": [
             {
-                "id": 1,
+                "id": 6, #喜欢表的ID
                 "user_id": 1,
                 "song": {
-                    "id": 0,
-                    "name": "减压曲2",
-                    "describe": null,
-                    "key": "asd",
-                    "url": "https://mp32.9ku.com/upload/128/2018/02/09/875689.mp3",
-                    "song_key": null,
+                    "id": 2, #歌曲ID
+                    "name": "雨滴",
+                    "isvip": 0, #是否是收费歌曲
+                    "describe": "5-10分钟",
+                    "image_url": null,
                     "song_url": null,
-                    "category_id": 0,
+                    "category_id": 7,
                     "insert_tm": null,
                     "update_tm": null
                 },
-                "insert_tm": "2021-09-23T11:28:09.000+08:00",
-                "update_tm": "2021-09-23T11:28:09.000+08:00"
+                "insert_tm": "2021-09-23T13:55:51.000+08:00",
+                "update_tm": "2021-09-23T13:55:51.000+08:00"
             }
         ],
         "pageNum": 1,

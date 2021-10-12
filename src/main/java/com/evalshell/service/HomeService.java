@@ -36,4 +36,6 @@ public interface HomeService {
     Category getCategoryById(Integer category_id);
 
     List<Song> getSongByParentCategoryId(Integer category_id);
+
+    List<Song> searchSong(String name);
 }

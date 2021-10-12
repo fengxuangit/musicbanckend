@@ -71,6 +71,7 @@ public class WeChatServiceImpl implements WeChatService {
             byteArrayOutputStream.close();
             stream.close();
             String str= new String(byteArrayOutputStream.toByteArray(),"UTF-8");
+            System.out.println(str);
             jsonObject = JSONObject.parseObject(str);
             System.out.println(jsonObject);
         }catch (Exception exception){

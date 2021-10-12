@@ -87,6 +87,15 @@ public class HomeController {
         return ResponseUtil.make_response(pageInfo, "success", 200);
     }
 
+    @RequestMapping(value = "/search")
+    public Object search(@RequestParam("name") String name, @RequestParam(value = "page", defaultValue = "0") Integer page,@RequestParam(value = "size", defaultValue = "10") Integer size){
+        PageHelper.startPage(page, size);
+        List<Song> hr = homeService.searchSong(name);
+        System.out.println(hr);
+        PageInfo<Song> pageInfo = new PageInfo<>(hr);
+        return ResponseUtil.make_response(pageInfo, "success", 200);
+    }
+
 
     @RequestMapping(value = "/getSongByCategoryId")
     public Object getSongByCategoryId(@RequestParam("id") Integer id, @RequestParam(value = "page", defaultValue = "0") Integer page, @RequestParam(value = "size", defaultValue = "10") Integer size){
@@ -143,7 +152,7 @@ public class HomeController {
         return pageInfo;
     }
 
-    @RequestMapping(value = "/sgetCalendarByDateetting", method = {RequestMethod.GET})
+    @RequestMapping(value = "/setting", method = {RequestMethod.GET})
     public Object getSetting(){
         Setting setting = homeService.getSetting();
         return ResponseUtil.make_response(setting, "success", 200);

@@ -4,36 +4,44 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.evalshell.service.HomeService">
     <select id="findAll"  resultMap="HomeResultMap">
-        select h.id,h.image_id,h.song_id,s.id as sid,s.name,s.url,s.key,s.isvip,i.id as image_id, i.key as image_key, i.url as  image_url from home h INNER JOIN song s ON h.song_id=s.id inner join image i on h.image_id=i.id
+        SELECT
+            h.id,
+            h.image_id,
+            h.song_id,
+            s.id AS sid,
+            s.NAME,
+            s.isvip,
+            s.url as song_url,
+            i.id AS image_id,
+            i.url AS image_url
+        FROM
+            home h
+                INNER JOIN song s ON h.song_id = s.id
+                INNER JOIN image i ON h.image_id = i.id
     </select>
     <resultMap id="HomeResultMap" type="com.evalshell.bean.model.Home">
         <id column="id" property="id"></id>
         <association property="image" javaType="com.evalshell.bean.model.Image">
             <id property="id" column="image_id"/>
-            <result property="key" column="image_key"/>
             <result property="url" column="image_url"/>
         </association>
         <association property="song" javaType="com.evalshell.bean.model.Song">
             <id property="id" column="sid"/>
            <result property="name" column="name"/>
            <result property="isvip" column="isvip"/>
-           <result property="key" column="key"/>
-           <result property="url" column="url"/>
+           <result property="song_url" column="song_url"/>
         </association>
     </resultMap>
 
     <resultMap id="getHomeRecommendResultMap" type="com.evalshell.bean.model.HomeRecommend">
         <id column="song_id" property="song_id"></id>
-        <result property="key" column="key"/>
-        <result property="url" column="url"/>
         <result property="isvip" column="isvip"/>
+        <result property="image_url" column="image_url"/>
         <result property="recommend_name" column="recommend_name"/>
         <result property="name" column="name"/>
-        <result property="song_key" column="song_key"/>
-        <result property="song_url" column="song_url"/>
         <result property="describe" column="describe"/>
     </resultMap>
-    <sql id="recommend_fields">s.id as song_id,im.key,im.url,hr.name as recommend_name,s.name,s.`describe`,s.key as song_key, s.url as song_url,s.isvip</sql>
+    <sql id="recommend_fields">s.id as song_id,im.url as image_url,hr.name as recommend_name,s.name,s.`describe`,s.isvip</sql>
     <sql id="recommend_inner_join_fields">home_recommend hr
                 INNER JOIN home_recommend_relation hrr ON hr.id = hrr.home_recommend_id
                 INNER JOIN song s ON hrr.song_id=s.id
@@ -96,27 +104,30 @@
         <result property="parent_category_id" column="parent_category_id"/>
     </resultMap>
     <select id="getCategoryById" resultMap="getCategoryByIdMap">
-        select * from category
+        select *
+        from category
         WHERE 1=1
         <if test="id != null" >
             and id=#{category_id}
         </if>
     </select>
 
-
+    <sql id="Song_Image_fields">s.id,s.name,s.`describe`,s.isvip,s.category_id,i.url as image_url</sql>
+    <sql id="Song_Image_JOIN_fields">song s INNER JOIN image i ON s.image_id=i.id </sql>
     <resultMap id="getSongByCategoryIdMap" type="com.evalshell.bean.model.Song">
         <id property="id" column="id"/>
         <result property="name" column="name"/>
-        <result property="key" column="key"/>
-        <result property="url" column="url"/>
         <result property="isvip" column="isvip"/>
         <result property="describe" column="describe"/>
+        <result property="image_url" column="image_url"/>
         <result property="category_id" column="category_id"/>
-        <result property="insert_tm" column="insert_tm"/>
-        <result property="update_tm" column="update_tm"/>
     </resultMap>
     <select id="getSongByCategoryId" resultMap="getSongByCategoryIdMap">
-        select * from song where 1=1
+        select
+        <include refid="Song_Image_fields"/>
+        from
+        <include refid="Song_Image_JOIN_fields"/>
+             where 1=1
         <if test="category_id != null" >
              and category_id=#{category_id}
         </if>
@@ -127,7 +138,6 @@
     <resultMap id="getSongByParentCategoryIdMap" type="com.evalshell.bean.model.Song">
         <id property="id" column="id"/>
         <result property="name" column="name"/>
-        <result property="key" column="key"/>
         <result property="url" column="url"/>
         <result property="isvip" column="isvip"/>
         <result property="describe" column="describe"/>
@@ -162,14 +172,19 @@
         <result property="insert_tm" column="insert_tm"/>
         <result property="update_tm" column="update_tm"/>
         <association property="song" column="song_id"  javaType="com.evalshell.bean.model.Song">
-<!--            <id property="id" column="song_id"/>-->
+            <id property="id" column="song_id"/>
             <result property="name" column="name"/>
-            <result property="key" column="key"/>
-            <result property="url" column="url"/>
+            <result property="isvip" column="isvip"/>
+            <result property="image_url" column="image_url"/>
+            <result property="category_id" column="category_id"/>
+            <result property="describe" column="describe"/>
         </association>
     </resultMap>
     <select id="getFavouriteListByUserId" resultMap="getFavouriteListByUserIdMap">
-        select f.*,s.name,s.key,s.url,s.name,s.id as song_id from favourite f INNER JOIN song s ON f.song_id=song_id WHERE 1=1
+        select f.*,s.id as song_id,s.name,s.`describe`,s.isvip,s.category_id,i.url as image_url
+               from favourite f INNER JOIN song s ON f.song_id=song_id INNER JOIN
+                  image i ON s.image_id=i.id
+        WHERE 1=1
         <if test="user_id != null" >
             and user_id=#{user_id}
         </if>
@@ -185,4 +200,29 @@
         select id,payinfo from setting where id=1
     </select>
 
+
+    <select id="searchSong"  resultMap="searchSongMap">
+        select s.id, s.image_id,s.url, s.name, s.`describe`, s.isvip, s.category_id, s.insert_tm,s.update_tm, i.url as image_url from song s
+        INNER JOIN image i ON s.image_id=i.id
+        WHERE 1=1
+        <if test="name != null" >
+            and `name` like '%${name}%'
+        </if>
+        order by id desc
+    </select>
+    <resultMap id="searchSongMap" type="com.evalshell.bean.model.Home">
+        <association property="image" javaType="com.evalshell.bean.model.Image">
+            <id property="id" column="image_id"/>
+            <result property="url" column="image_url"/>
+        </association>
+        <association property="song" javaType="com.evalshell.bean.model.Song">
+            <id column="id" property="id"></id>
+            <result property="name" column="name"/>
+            <result property="isvip" column="isvip"/>
+            <result property="describe" column="describe"/>
+            <result property="category_id" column="category_id"/>
+            <result property="insert_tm" column="insert_tm"/>
+            <result property="update_tm" column="update_tm"/>
+        </association>
+    </resultMap>
 </mapper>

@@ -36,11 +36,13 @@ public class HomeDaoImpl implements HomeService {
             String recommend_name = homeRecommend.getRecommend_name();
             boolean flag = false;
             HomeRecommendBase homeRecommendBase = new HomeRecommendBase();
-            homeRecommendBase.setUrl(homeRecommend.getUrl());
+//            homeRecommendBase.setUrl(homeRecommend.getUrl());
             homeRecommendBase.setSong_id(homeRecommend.getSong_id());
-            homeRecommendBase.setSong_key(homeRecommend.getSong_key());
-            homeRecommendBase.setSong_url(homeRecommend.getSong_url());
-            homeRecommendBase.setKey(homeRecommend.getKey());
+            homeRecommendBase.setSong_id(homeRecommend.getSong_id());
+            homeRecommendBase.setIsvip(homeRecommend.getIsvip());
+//            homeRecommendBase.setSong_key(homeRecommend.getSong_key());
+//            homeRecommendBase.setSong_url(homeRecommend.getSong_url());
+//            homeRecommendBase.setKey(homeRecommend.getKey());
             homeRecommendBase.setDescribe(homeRecommend.getDescribe());
             homeRecommendBase.setName(homeRecommend.getName());
             for (HomeRecommendSerializer hrs: homeRecommendSerializerList){
@@ -129,5 +131,10 @@ public class HomeDaoImpl implements HomeService {
     @Override
     public List<Song> getSongByParentCategoryId(Integer category_id) {
         return homeService.getSongByParentCategoryId(category_id);
+    }
+
+    @Override
+    public List<Song> searchSong(String name) {
+        return homeService.searchSong(name);
     }
 }
