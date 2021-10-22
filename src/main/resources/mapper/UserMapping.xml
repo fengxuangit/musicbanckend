@@ -30,7 +30,7 @@
         <result property="update_tm" column="update_tm"/>
     </resultMap>
     <select id="findUserByOpenId" resultMap="findUserByOpenIdMap">
-        select id, nickname,openid,avatarUrl,gender,country,province,city,unionid,insert_tm,update_tm from `user`
+        select id, nickname,openid,avatarUrl,gender,country,province,city,unionid,insert_tm,update_tm,isvip,vip_expiretime from `user`
         WHERE 1=1
         <if test="openid != null" >
             and openid=#{openid}
@@ -40,15 +40,16 @@
         <resultMap id="getPlayRecordListByUserIdMap" type="com.evalshell.bean.model.PlayRecord">
         <id property="id" column="id"/>
         <result property="user_id" column="user_id"/>
-        <association property="song" column="song_id"  javaType="com.evalshell.bean.model.Song">
-            <!--            <id property="id" column="song_id"/>-->
+        <association property="song" javaType="com.evalshell.bean.model.Song">
+            <id property="id" column="song_id"/>
             <result property="name" column="name"/>
-            <result property="key" column="key"/>
-            <result property="url" column="url"/>
+            <result property="isvip" column="isvip"/>
+            <result property="describe" column="describe"/>
+            <result property="image_url" column="image_url"/>
         </association>
     </resultMap>
     <select id="getPlayRecordListByUserId" resultMap="getPlayRecordListByUserIdMap">
-        select p.*,s.name,s.key,s.url,s.name,s.id as song_id from play_record p INNER JOIN song s ON p.song_id=song_id WHERE 1=1
+        select p.*,s.name,s.isvip,s.describe,s.name,s.id as song_id,i.url as image_url from play_record p INNER JOIN song s ON p.song_id=s.id INNER JOIN image i on s.image_id=i.id WHERE 1=1
         <if test="user_id != null" >
             and user_id=#{user_id}
         </if>
@@ -70,7 +71,7 @@
 
 
     <select id="findUserById" resultMap="findUserByOpenIdMap">
-        select id, nickname,openid,avatarUrl,gender,country,province,city,unionid,isvip,vip_expiretime, insert_tm,update_tm from `user`
+        select id, nickname,openid,avatarUrl,gender,country,province,city,unionid,isvip,vip_expiretime,insert_tm,update_tm from `user`
         WHERE 1=1
         <if test="id != null" >
             and id=#{id}

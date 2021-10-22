@@ -9,6 +9,7 @@
     <resultMap id="findCalendarByDateResultMap" type="com.evalshell.bean.model.Calendar">
         <id column="id" property="id"></id>
         <result property="date" column="date"/>
+        <result property="image_id" column="image_id"/>
         <result property="word" column="word"/>
         <result property="insert_tm" column="insert_tm"/>
         <result property="update_tm" column="update_tm"/>
@@ -20,8 +21,8 @@
 
 
 
-    <select id="findCalendarByDate" resultMap="findCalendarByDateMap">
-        select c.*,im.key,im.url from calendar c INNER JOIN image im ON c.image_id=im.id where 1=1
+    <select id="findCalendarByDateSingle" resultMap="findCalendarByDateMap">
+        select c.* from calendar c where 1=1
         <if test="date != null" >
             and `date`=#{date}
         </if>
@@ -30,7 +31,18 @@
         <id property="id" column="id"/>
         <result property="date" column="date"/>
         <result property="word" column="word"/>
+        <result property="image_id" column="image_id"/>
         <result property="insert_tm" column="insert_tm"/>
         <result property="update_tm" column="update_tm"/>
     </resultMap>
+
+    <update id="update" parameterType="com.evalshell.bean.model.Calendar">
+        update calendar
+        <set>
+            <if test="image_id != null">
+                image_id = #{image_id}
+            </if>
+        </set>
+        where id=#{id}
+    </update>
 </mapper>

@@ -21,4 +21,16 @@ public class CalendarServiceImpl implements CalendarService {
         calendar.setWordObject(JSON.parseObject(calendar.getWord()));
         return calendar;
     }
+
+    @Override
+    public Calendar findCalendarByDateSingle(Date date) {
+        Calendar calendar = calendarService.findCalendarByDateSingle(date);
+        calendar.setWordObject(JSON.parseObject(calendar.getWord()));
+        return calendar;
+    }
+
+    @Override
+    public void update(Calendar calendar) {
+        calendarService.update(calendar);
+    }
 }

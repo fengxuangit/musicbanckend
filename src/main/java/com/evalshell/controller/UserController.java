@@ -48,6 +48,7 @@ public class UserController {
             return ResponseUtil.make_response(null, "没有此用户", 400);
         }
         String openid = (String) object.get("openid");
+        System.out.println(openid);
         User user = userServiceImpl.findUserByOpenId(openid);
         if (user != null){
             return ResponseUtil.make_response(user, "success", 201);

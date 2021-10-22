@@ -36,13 +36,11 @@ public class HomeDaoImpl implements HomeService {
             String recommend_name = homeRecommend.getRecommend_name();
             boolean flag = false;
             HomeRecommendBase homeRecommendBase = new HomeRecommendBase();
-//            homeRecommendBase.setUrl(homeRecommend.getUrl());
+            homeRecommendBase.setId(homeRecommend.getId());
             homeRecommendBase.setSong_id(homeRecommend.getSong_id());
             homeRecommendBase.setSong_id(homeRecommend.getSong_id());
+            homeRecommendBase.setImage_url(homeRecommend.getImage_url());
             homeRecommendBase.setIsvip(homeRecommend.getIsvip());
-//            homeRecommendBase.setSong_key(homeRecommend.getSong_key());
-//            homeRecommendBase.setSong_url(homeRecommend.getSong_url());
-//            homeRecommendBase.setKey(homeRecommend.getKey());
             homeRecommendBase.setDescribe(homeRecommend.getDescribe());
             homeRecommendBase.setName(homeRecommend.getName());
             for (HomeRecommendSerializer hrs: homeRecommendSerializerList){
@@ -76,6 +74,11 @@ public class HomeDaoImpl implements HomeService {
     @Override
     public List<HomeRecommend> getCategoryRecommendByName(String name) {
         return homeService.getCategoryRecommendByName(name);
+    }
+
+    @Override
+    public List<HomeRecommend> getHomeRecommendById(Integer id) {
+        return homeService.getHomeRecommendById(id);
     }
 
     @Override
@@ -149,5 +152,15 @@ public class HomeDaoImpl implements HomeService {
         playRecord.setInsert_tm(date);
         playRecord.setUpdate_tm(date);
         homeService.addPlayRecord(playRecord);
+    }
+
+    @Override
+    public Integer findFavouriteById(Integer user_id, Integer song_id) {
+        return homeService.findFavouriteById(user_id, song_id);
+    }
+
+    @Override
+    public void createImage(Image image) {
+        homeService.createImage(image);
     }
 }

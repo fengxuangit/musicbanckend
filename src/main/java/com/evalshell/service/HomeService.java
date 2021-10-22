@@ -17,6 +17,8 @@ public interface HomeService {
 
     public List<HomeRecommend> getHomeRecommendByName(String name);
 
+    public List<HomeRecommend> getHomeRecommendById(Integer id);
+
     public List<HomeRecommend> getCategoryRecommendByName(String name);
 
     public List<RecommendCategory> getRecommendCategory();
@@ -29,6 +31,8 @@ public interface HomeService {
 
     void delFavourite(Integer user_id, Integer song_id);
 
+    Integer findFavouriteById(Integer user_id, Integer song_id);
+
     List<FavouriteListSerializer> getFavouriteListByUserId(Integer user_id);
 
     Setting getSetting();
@@ -40,6 +44,8 @@ public interface HomeService {
     List<Song> searchSong(String name);
 
     Song getSongById(Integer id);
+
+    void createImage(Image image);
 
     void addPlayRecord(PlayRecord playRecord);
 }

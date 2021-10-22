@@ -6,4 +6,8 @@ import java.util.Date;
 
 public interface CalendarService {
     Calendar findCalendarByDate(Date date);
+
+    Calendar findCalendarByDateSingle(Date date);
+
+    void update(Calendar calendar);
 }

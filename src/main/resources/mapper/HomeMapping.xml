@@ -48,6 +48,7 @@
                 INNER JOIN image im ON s.image_id = im.id</sql>
     <select id="getHomeRecommend" resultMap="getHomeRecommendResultMap">
         SELECT
+            hr.id,
             <include refid="recommend_fields"/>
         FROM
         <include refid="recommend_inner_join_fields"/>
@@ -63,6 +64,17 @@
         WHERE hr.type='home'
         <if test="name != null" >
             and hr.name=#{name}
+        </if>
+    </select>
+
+    <select id="getHomeRecommendById" resultMap="getHomeRecommendResultMap">
+        SELECT
+        <include refid="recommend_fields"/>
+        FROM
+        <include refid="recommend_inner_join_fields"/>
+        WHERE 1=1
+        <if test="id != null" >
+            and hr.id=#{id}
         </if>
     </select>
 
@@ -138,15 +150,15 @@
     <resultMap id="getSongByParentCategoryIdMap" type="com.evalshell.bean.model.Song">
         <id property="id" column="id"/>
         <result property="name" column="name"/>
-        <result property="url" column="url"/>
         <result property="isvip" column="isvip"/>
         <result property="describe" column="describe"/>
+        <result property="image_url" column="image_url"/>
         <result property="category_id" column="category_id"/>
         <result property="insert_tm" column="insert_tm"/>
         <result property="update_tm" column="update_tm"/>
     </resultMap>
     <select id="getSongByParentCategoryId" resultMap="getSongByParentCategoryIdMap">
-        select * from song s INNER JOIN category c ON s.category_id=c.id  where 1=1
+        select s.id,s.name,s.image_id,s.describe,s.isvip,s.category_id,s.insert_tm,s.update_tm,i.url as image_url from song s INNER JOIN image i on s.image_id=i.id INNER JOIN category c ON s.category_id=c.id  where 1=1
         <if test="category_id != null" >
             and c.parent_category_id=#{category_id}
         </if>
@@ -250,10 +262,28 @@
     </select>
 
 
-    <insert id="addPlayRecord" parameterType="com.evalshell.bean.model.PlayRecord" useGeneratedKeys="true" keyProperty="id" >
-        insert into play_record (user_id, song_id, insert_tm, update_tm
+    <insert id="addPlayRecord" parameterType="com.evalshell.bean.model.PlayRecord"  >
+        REPLACE into play_record (user_id, song_id, insert_tm, update_tm
         )
         values ( #{user_id}, #{song_id}, #{insert_tm},#{update_tm}
         )
     </insert>
+
+
+    <select id="findFavouriteById" resultType="java.lang.Integer">
+        select count(*) from favourite
+        <where>
+            <if test="user_id != null">
+                and user_id=#{user_id}
+            </if>
+            <if test="song_id != null">
+                and song_id=#{song_id}
+            </if>
+        </where>
+    </select>
+
+    <insert id="createImage" parameterType="com.evalshell.bean.model.Image" keyColumn="id" useGeneratedKeys="true" keyProperty="id">
+        insert into image(`url`) values ( #{url})
+    </insert>
+
 </mapper>

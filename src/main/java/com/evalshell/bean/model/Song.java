@@ -10,6 +10,7 @@ public class Song {
     private String name;
     private Integer isvip;
     private String describe;
+    private String url;
     private String image_url;
     private String song_url;
     private int category_id;

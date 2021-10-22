@@ -1,8 +1,13 @@
 package com.evalshell.handler;
 
+import com.alibaba.fastjson.JSONObject;
+import com.evalshell.config.WaterConfig;
 import com.evalshell.service.impl.HomeDaoImpl;
 import com.evalshell.utils.QiniuUtil;
+import javafx.animation.PathTransition;
+import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -24,10 +29,10 @@ import java.util.Date;
 
 //@Configuration
 //@EnableScheduling
+@Component
+@Data
 public class WaterMark {
 
-    @Autowired
-    HomeDaoImpl homeService;
 
     public static void main(String[] args) throws Exception {
 //        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");//设置日期格式
@@ -35,39 +40,45 @@ public class WaterMark {
 //        mark();
     }
 
-    public static String path = "/Users/fengxuan/Downloads/";
 
-    @Scheduled(cron="*/10 * * * * *")
     public void test(){
 
     }
 
+    public static String getDate(){
+        Date date2 = new Date();
+        SimpleDateFormat timeFormater = new SimpleDateFormat("yyyy-MM-dd");
+        String str = timeFormater.format(date2);
+        return str;
+    }
+
 //    @Scheduled(cron="0 * */1 * * *")
-    public static void mark() throws  Exception{
+    public static String mark(String path, JSONObject word) throws  Exception{
+        String date = WaterMark.getDate();
+
+
         Font font = Font.createFont(Font.TRUETYPE_FONT, new File(path+"fonts/PingFang_SC_Regular.ttf"));
 //        font = new Font("宋体", Font.PLAIN, 20);
         Font font1 = font.deriveFont(Font.PLAIN, 80f);
         Color color = new Color(255,255,255);
-        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");//设置日期格式
-        String newname = df.format(new Date()) + ".png";// new Date()为获取当前系统时间
-        String newpath = path + newname; 
-        addWatermark(path + "bg.png", newpath, font1, color, "05", 50, 800);
+        String newname = date + ".png";// new Date()为获取当前系统时间
+        String newpath = path + newname;
+        addWatermark(path + "/source/"+date+".png", newpath, font1, color, "05", 50, 800);
         font1 = font.deriveFont(Font.PLAIN, 30f);
         addWatermark(newpath, path + newname, font1, color, "oct 2021", 50, 850);
         font1 = font.deriveFont(Font.BOLD, 35f);
-        addWatermark(newpath, newpath, font1, color, "因为项目中考虑到添加图片版权的保护，特意看了下水印的处理以下有两种方式", 50, 950);
+        addWatermark(newpath, newpath, font1, color, word.getString("word"), 50, 950);
 
         font1 = font.deriveFont(Font.PLAIN, 30f);
-        addWatermark(newpath, newpath, font1, color, "历史学家，何永杰22", 50, 1150);
-        markImgMark(path + "gh_2.jpg", newpath, newpath);
+        addWatermark(newpath, newpath, font1, color, word.getString("author"), 50, 1150);
+        markImgMark(path + "/source/gh.jpg", newpath, newpath);
 
         try {
             QiniuUtil.uploadFile(newpath, "image/calendar/" + newname);
         }catch (Exception e){
             e.printStackTrace();
         }
-        System.out.println("http://music.gitsort.com/image/calendar/" + newname);
-
+        return "http://music.gitsort.com/image/calendar/" + newname;
     }
 
 

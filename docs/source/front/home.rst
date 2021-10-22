@@ -204,6 +204,63 @@ type字段为home的时候，就是首页的分类，如果是discovery就是推
     }
 
 
+根据ID获取推荐中的歌曲列表
+--------------------------------
+
+- GET home/getHomeRecommendByID
+
+这个获取首页P2和推荐页P4的中分类的列表数据
+
+
+- 请求参数::
+
+    {
+        "id": 2, #首页分类ID ｜ 整型｜ 必填
+        "page": 1, #页码 | 整形 | 选填
+        "size": 10, #页数  | 整形 | 选填
+    }
+
+- 返回参数::
+
+    {
+        "data": {
+            "total": 2, #总共的条数
+            "list": [
+                {
+                    "song_id": 3, #歌曲ID
+                    "isvip": 0 | 1,
+                    "image_url": "https://file.zuopin.cloud/Fsod1dlzAyQ2kIkhcidFwJ9WVqiX,", #图片的url
+                    "recommend_name": "情绪调节", #首页推荐的名称
+                    "name": "减压曲2", #歌曲名
+                    "describe": "5-10分钟" #歌曲描述
+                },
+
+            ],
+            "pageNum": 1, #当前页数
+            "pageSize": 10, #当前页码
+            "size": 2, #总共的条数
+            "startRow": 1,
+            "endRow": 2,
+            "pages": 1, #总共的页数
+            "prePage": 0, #上一页
+            "nextPage": 0, #下一页
+            "isFirstPage": true, #是否是第一页
+            "isLastPage": true, #是否是最后一页
+            "hasPreviousPage": false,
+            "hasNextPage": false,
+            "navigatePages": 8,
+            "navigatepageNums": [
+                1
+            ],
+            "navigateFirstPage": 1,
+            "navigateLastPage": 1
+        },
+        "message": "success",
+        "status": 200
+    }
+
+
+
 获取分类中的歌曲列表
 --------------------------------
 
