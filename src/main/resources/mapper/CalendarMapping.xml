@@ -4,7 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.evalshell.service.CalendarService">
     <select id="findCalendarByDate" parameterType="java.util.Date"  resultMap="findCalendarByDateResultMap">
-        select c.id,c.image_id,c.date,c.word,c.insert_tm,c.update_tm,im.id as image_id,im.url as image_url from calendar c inner join image im on image_id=c.image_id where c.date=#{date}
+        select c.id,c.image_id,c.date,c.word,c.insert_tm,c.update_tm,im.id as image_id,im.url as image_url from calendar c inner join image im on im.id=c.image_id where c.date=#{date}
     </select>
     <resultMap id="findCalendarByDateResultMap" type="com.evalshell.bean.model.Calendar">
         <id column="id" property="id"></id>
