@@ -8,5 +8,5 @@ public class Setting {
     private Integer id;
     private String payinfo;
     private JSONObject payinfobj;
-
+    private Integer version;
 }

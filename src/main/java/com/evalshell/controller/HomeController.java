@@ -217,15 +217,16 @@ public class HomeController {
     public Object getSongUrl(@RequestParam(value = "user_id") Integer user_id, @RequestParam(value = "id") Integer id){
         User user = userService.findUserById(user_id);
         if (user != null && user.getIsvip() != 0){
-            Song song = homeService.getSongById(id);
+            //这里复用首页的序列化类·
+            Home home = homeService.getSongById(id);
             PlayRecord playRecord = new PlayRecord();
             playRecord.setUser_id(user_id);
-            playRecord.setSong_id(song.getId());
+            playRecord.setSong_id(home.getSong().getId());
             homeService.addPlayRecord(playRecord);
-            Integer count = homeService.findFavouriteById(user_id, song.getId());
+            Integer count = homeService.findFavouriteById(user_id, home.getSong().getId());
 
             SongResult songResult = new SongResult();
-            songResult.setSong(song);
+            songResult.setHome(home);
             songResult.setStatus(count);
             return ResponseUtil.make_response(songResult, "success", 200);
         }

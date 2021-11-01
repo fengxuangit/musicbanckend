@@ -13,7 +13,9 @@
             s.isvip,
             s.url as song_url,
             i.id AS image_id,
-            i.url AS image_url
+            i.url AS image_url,
+            i.type as type ,
+            i.video_url as video_url
         FROM
             home h
                 INNER JOIN song s ON h.song_id = s.id
@@ -24,6 +26,8 @@
         <association property="image" javaType="com.evalshell.bean.model.Image">
             <id property="id" column="image_id"/>
             <result property="url" column="image_url"/>
+            <result property="type" column="type"/>
+            <result property="video_url" column="video_url"/>
         </association>
         <association property="song" javaType="com.evalshell.bean.model.Song">
             <id property="id" column="sid"/>
@@ -207,9 +211,10 @@
     <resultMap id="SettingMap" type="com.evalshell.bean.model.Setting">
         <id property="id" column="id"/>
         <result property="payinfo" column="payinfo"/>
+        <result property="version" column="version"/>
     </resultMap>
     <select id="getSetting" resultMap="SettingMap">
-        select id,payinfo from setting where id=1
+        select id,payinfo,version from setting where id=1
     </select>
 
 
@@ -240,18 +245,25 @@
 
 
 
-    <resultMap id="getSongByIdMap" type="com.evalshell.bean.model.Song">
-        <id property="id" column="id"/>
-        <result property="name" column="name"/>
-        <result property="isvip" column="isvip"/>
-        <result property="describe" column="describe"/>
-        <result property="image_url" column="image_url"/>
-        <result property="song_url" column="url"/>
-        <result property="category_id" column="category_id"/>
+
+    <resultMap id="getSongByIdMap" type="com.evalshell.bean.model.Home">
+        <id column="id" property="id"></id>
+        <association property="image" javaType="com.evalshell.bean.model.Image">
+            <id property="id" column="image_id"/>
+            <result property="url" column="image_url"/>
+            <result property="type" column="type"/>
+            <result property="video_url" column="video_url"/>
+        </association>
+        <association property="song" javaType="com.evalshell.bean.model.Song">
+            <id property="id" column="sid"/>
+            <result property="name" column="name"/>
+            <result property="isvip" column="isvip"/>
+            <result property="song_url" column="song_url"/>
+        </association>
     </resultMap>
     <select id="getSongById" resultMap="getSongByIdMap">
         select
-        <include refid="Song_Image_fields"/>,s.url
+        s.id,s.name,s.`describe`,s.isvip,s.category_id,i.url as image_url,s.url as song_url,i.type,i.video_url
         from
         <include refid="Song_Image_JOIN_fields"/>
         where 1=1

@@ -43,7 +43,7 @@ public interface HomeService {
 
     List<Song> searchSong(String name);
 
-    Song getSongById(Integer id);
+    Home getSongById(Integer id);
 
     void createImage(Image image);
 

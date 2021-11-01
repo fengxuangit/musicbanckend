@@ -142,7 +142,7 @@ public class HomeDaoImpl implements HomeService {
     }
 
     @Override
-    public Song getSongById(Integer id) {
+    public Home getSongById(Integer id) {
         return homeService.getSongById(id);
     }
 

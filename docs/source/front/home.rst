@@ -8,6 +8,10 @@
 
 - GET home/gethome
 
+
+    这个image字段中的type如果是video就是说明是视频，就播放video_url否则就展示url这个图片
+
+
 - 请求参数::
 
     无
@@ -20,7 +24,9 @@
                 "id": 1,
                 "image": {
                     "id": 1,
-                    "url": "http://music.gitsort.com/image/%E4%B8%8B%E9%9B%A8.jpg"
+                    "url": "http://music.gitsort.com/image/%E4%B8%8B%E9%9B%A8.jpg",
+                    "type": "image",
+                    "video_url": "http://music.gitsort.com//video/2021101812312.mp4"
                 },
                 "song": {
                     "id": 1,
@@ -436,6 +442,8 @@ type字段为home的时候，就是首页的分类，如果是discovery就是推
 
 - GET home/setting
 
+    version字段为版本数字，当小程序自带的版本大于这个数的时候，隐藏支付。等于或者小于都开放支付
+
 - 请求参数::
 
     无
@@ -465,7 +473,8 @@ type字段为home的时候，就是首页的分类，如果是discovery就是推
                         "now": 30
                     }
                 }
-            }
+            },
+            "version": 1 #数字
         },
         "message": "success",
         "status": 200
@@ -574,6 +583,8 @@ type字段为home的时候，就是首页的分类，如果是discovery就是推
 
 这个接口请求一次，也算是一次播放记录！
 
+    这个image字段中的type如果是video就是说明是视频，就播放video_url否则就展示url这个图片
+
 - 请求参数::
 
     {
@@ -585,15 +596,74 @@ type字段为home的时候，就是首页的分类，如果是discovery就是推
 
     {
         "data": {
-            "id": 2,
-            "name": "海浪",
-            "isvip": 0,
-            "describe": "5-10分钟",
-            "image_url": "http://music.gitsort.com/image/%E6%B5%B7%E6%B5%AA.jpg",
-            "song_url": "http://music.gitsort.com/music/%E9%A6%96%E9%A1%B5/%E7%96%97%E6%84%88%E6%B5%B7%E6%B5%AA%E5%A3%B0.mp3",
-            "category_id": 7,
-            "insert_tm": null,
-            "update_tm": null
+            "status": 0,
+            "home": {
+                "id": 1,
+                "image": {
+                    "id": 0,
+                    "url": "http://music.gitsort.com/image/%E4%B8%8B%E9%9B%A8.jpg",
+                    "type": "video|image",
+                    "video_url": "http://music.gitsort.com//video/2021101812312.mp4"
+                },
+                "song": {
+                    "id": 0,
+                    "name": "雨滴",
+                    "isvip": 0,
+                    "describe": null,
+                    "url": null,
+                    "image_url": null,
+                    "song_url": "http://music.gitsort.com/music/%E9%A6%96%E9%A1%B5/%E9%9B%A8%E6%BB%B45%E5%88%86%E9%92%9F%E7%89%88%E6%9C%AC.mp3",
+                    "category_id": 0,
+                    "insert_tm": null,
+                    "update_tm": null
+                }
+            }
+        },
+        "message": "success",
+        "status": 200
+    }
+
+
+
+过审时 获取歌曲地址
+--------------------------------
+
+- GET home/getTemporarySong
+
+    这个接口是过审的时候临时使用！
+
+- 请求参数::
+
+    {
+        "id": 1, # 歌曲的ID | yes | 整型
+    }
+
+- 返回参数::
+
+    {
+        "data": {
+            "status": 0,
+            "home": {
+                "id": 1,
+                "image": {
+                    "id": 0,
+                    "url": "http://music.gitsort.com/image/%E4%B8%8B%E9%9B%A8.jpg",
+                    "type": "video|image",
+                    "video_url": "http://music.gitsort.com//video/2021101812312.mp4"
+                },
+                "song": {
+                    "id": 0,
+                    "name": "雨滴",
+                    "isvip": 0,
+                    "describe": null,
+                    "url": null,
+                    "image_url": null,
+                    "song_url": "http://music.gitsort.com/music/%E9%A6%96%E9%A1%B5/%E9%9B%A8%E6%BB%B45%E5%88%86%E9%92%9F%E7%89%88%E6%9C%AC.mp3",
+                    "category_id": 0,
+                    "insert_tm": null,
+                    "update_tm": null
+                }
+            }
         },
         "message": "success",
         "status": 200

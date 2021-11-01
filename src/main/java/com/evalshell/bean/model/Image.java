@@ -8,4 +8,6 @@ import java.util.Date;
 public class Image {
     private int id;
     private String url;
+    private String type;
+    private String video_url;
 }
