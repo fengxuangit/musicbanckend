@@ -28,10 +28,7 @@ import org.springframework.web.client.RestTemplate;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -162,6 +159,18 @@ public class WechatController {
             while ((line = bufferedReader.readLine()) != null){
                 stringBuilder.append(line+"\n");
             }
+
+            File txt = new File("/tmp/res.txt");
+            if (!txt.exists()){
+                txt.createNewFile();
+            }
+            byte bytes[]=new byte[512];
+            bytes= stringBuilder.toString().getBytes();
+            int b=bytes.length;  //是字节的长度，不是字符串的长度
+            FileOutputStream fos=new FileOutputStream(txt);
+            fos.write(bytes,0, b);
+            fos.write(bytes);
+            fos.close();
             xmlBack = weChatService.notify(stringBuilder.toString());
         } catch (Exception exception) {
             exception.printStackTrace();

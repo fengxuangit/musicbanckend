@@ -114,16 +114,20 @@ public class WeChatServiceImpl implements WeChatService {
             if (order == null){
                 return xmlBack;
             }
+            if (order.getStatus() == 1){
+                xmlBack = "<xml><return_code><![CDATA[FAIL]]></return_code><return_msg><![CDATA[订单无法重复提交]]></return_msg></xml> ";
+                return xmlBack;
+            }
             order.setStatus(1);
             payMentService.updateOrder(order);
 
             //更新用户相关
             User user = userService.findUserById(order.getUser_id());
-            user.setIsvip(1);
             //获取这个人需要加几个月的时间
             Integer timenumber = this.vipexpiretime(order.getType());
             DateFormat dateFormat = DateFormat.getDateInstance(DateFormat.MEDIUM, Locale.CHINA);
             Date newdate = null;
+            System.out.println(user);
             if (user.getIsvip() == 1){
                 newdate = CommonUtil.getAfterMonth(dateFormat.format(user.getVip_expiretime()), timenumber);
             }else{
