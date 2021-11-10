@@ -9,4 +9,5 @@ public class Setting {
     private String payinfo;
     private JSONObject payinfobj;
     private Integer version;
+    private Integer audit;
 }

@@ -636,6 +636,7 @@ type字段为home的时候，就是首页的分类，如果是discovery就是推
 
     {
         "id": 1, # 歌曲的ID | yes | 整型
+        "user_id": 10 #用户ID  | yes | 整型
     }
 
 - 返回参数::

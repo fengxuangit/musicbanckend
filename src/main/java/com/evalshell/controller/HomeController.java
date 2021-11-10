@@ -233,6 +233,24 @@ public class HomeController {
         return ResponseUtil.make_response(null, "你不是会员！", 100);
     }
 
+    @RequestMapping(value = "/getTemporarySong", method = {RequestMethod.GET})
+    public Object getTemporarySong(@RequestParam(value = "user_id") Integer user_id, @RequestParam(value = "id") Integer id){
+        Setting setting = homeService.getSetting();
+        if (setting.getAudit() == 1){
+            Home home = homeService.getSongById(id);
+            PlayRecord playRecord = new PlayRecord();
+            playRecord.setUser_id(user_id);
+            playRecord.setSong_id(home.getSong().getId());
+            homeService.addPlayRecord(playRecord);
+            SongResult songResult = new SongResult();
+            songResult.setHome(home);
+            Integer count = homeService.findFavouriteById(user_id, home.getSong().getId());
+            songResult.setStatus(count);
+            return ResponseUtil.make_response(songResult, "success", 200);
+        }
+        return ResponseUtil.make_response(null, "你不是会员！", 100);
+    }
+
     @RequestMapping(value = "/getsongpost", method = {RequestMethod.GET})
     public Object getSongPost(){
 

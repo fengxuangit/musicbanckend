@@ -11,6 +11,7 @@ public class Song {
     private Integer isvip;
     private String describe;
     private String url;
+    private String post;
     private String image_url;
     private String song_url;
     private int category_id;
