@@ -12,7 +12,7 @@ public interface UserService {
 
     boolean delete(Integer userid);
 
-    public User update(User user);
+    public void update(User user);
 
     public User findUserById(Integer id);
 

@@ -120,6 +120,7 @@ public class WeChatServiceImpl implements WeChatService {
             //更新用户相关
             User user = userService.findUserById(order.getUser_id());
             user.setIsvip(1);
+            //获取这个人需要加几个月的时间
             Integer timenumber = this.vipexpiretime(order.getType());
             DateFormat dateFormat = DateFormat.getDateInstance(DateFormat.MEDIUM, Locale.CHINA);
             Date newdate = null;
@@ -130,6 +131,7 @@ public class WeChatServiceImpl implements WeChatService {
                 user.setIsvip(1);
             }
             user.setVip_expiretime(newdate);
+            System.out.println(user);
             userService.update(user);
             xmlBack = "<xml><return_code><![CDATA[SUCCESS]]></return_code><return_msg><![CDATA[OK]]></return_msg></xml>";
 

@@ -60,13 +60,13 @@
         update user
         <set>
             <if test="isvip != null">
-                isvip = #{isvip, jdbctype=Integer},
+                isvip = #{isvip},
             </if>
-            <if test="vip_expretime != null">
-                vip_expretime = #{vip_expretime, jdbctype=DATE},
+            <if test="vip_expiretime != null">
+                vip_expiretime = #{vip_expiretime},
             </if>
         </set>
-        where id = #{user_id}
+        where id = #{id}
     </update>
 
 

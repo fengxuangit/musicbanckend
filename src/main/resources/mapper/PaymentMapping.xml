@@ -31,7 +31,7 @@
         update orderinfo
         <set>
             <if test="status != null">
-                name = #{status, jdbcType=Integer},
+                status = #{status},
             </if>
             <if test="pay_tm != null">
                 pay_tm = #{pay_tm, jdbcType=DATE},

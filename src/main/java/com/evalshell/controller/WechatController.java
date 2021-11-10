@@ -129,7 +129,7 @@ public class WechatController {
         requestParam.put("fee_type", "CNY");//人民币
         requestParam.put("total_fee", String.valueOf(orderInfo.getMoney() * 100)); //金额
         requestParam.put("spbill_create_ip", request.getRemoteAddr());//客户端ip
-        requestParam.put("notify_url", "none");//微信异步通知支付结果接口，暂时不用
+        requestParam.put("notify_url", notifyUrl);//微信异步通知支付结果接口，暂时不用
         requestParam.put("trade_type", "JSAPI");
         //从请求中获取openid
         String openid = request.getParameter("openid");
@@ -150,7 +150,8 @@ public class WechatController {
     }
 
 
-    @RequestMapping(value = "/notify", method = {RequestMethod.POST})
+    @RequestMapping(value = "/notify", method = {RequestMethod.POST}, produces = {"application/xml;charset=UTF-8"})
+    @ResponseBody
     public Object Notify(HttpServletRequest request){
         InputStream is = null;
         String xmlBack = "<xml><return_code><![CDATA[FAIL]]></return_code><return_msg><![CDATA[报文为空]]></return_msg></xml> ";
