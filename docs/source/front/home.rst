@@ -669,3 +669,28 @@ type字段为home的时候，就是首页的分类，如果是discovery就是推
         "message": "success",
         "status": 200
     }
+
+
+获取分享的海报
+--------------------------------
+
+- GET home/getsongshareimage
+
+
+- 请求参数::
+
+    {
+        "id": 1, # 歌曲的ID | yes | 整型
+        "user_id": 10 #用户ID  | yes | 整型
+    }
+
+- 返回参数::
+
+    {
+        "data": {
+            "id": 13,
+            "image_url": "http://music.gitsort.com/image/%E5%A3%81%E6%A9%B1.jpg"
+        },
+        "message": "success",
+        "status": 200
+    }

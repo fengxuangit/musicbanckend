@@ -80,6 +80,7 @@
         <if test="id != null" >
             and hr.id=#{id}
         </if>
+        order by song_id desc
     </select>
 
     <select id="getCategoryRecommendByName" resultMap="getHomeRecommendResultMap">
@@ -147,7 +148,7 @@
         <if test="category_id != null" >
              and category_id=#{category_id}
         </if>
-        order by id
+        order by id desc
     </select>
 
 
@@ -168,6 +169,19 @@
         </if>
         order by s.id
     </select>
+
+
+    <resultMap id="getSongCodeImageMap" type="com.evalshell.bean.serializer.CodeImage">
+        <id property="id" column="id"/>
+        <result property="image_url" column="image_url"/>
+    </resultMap>
+    <select id="getSongCodeImageById" resultMap="getSongCodeImageMap">
+        select s.id,s.code_image_id,i.url as image_url from song s INNER JOIN image i on s.code_image_id=i.id  where 1=1
+        <if test="id != null" >
+            and s.id=#{id}
+        </if>
+    </select>
+
 
     <insert id="favouriteCreate" parameterType="com.evalshell.bean.model.Favourite" useGeneratedKeys="true" keyProperty="id" >
         replace into favourite (user_id, song_id, insert_tm, update_tm

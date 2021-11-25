@@ -2,6 +2,7 @@ package com.evalshell.service.impl;
 
 import com.alibaba.fastjson.JSON;
 import com.evalshell.bean.model.*;
+import com.evalshell.bean.serializer.CodeImage;
 import com.evalshell.bean.serializer.FavouriteListSerializer;
 import com.evalshell.bean.serializer.HomeRecommendBase;
 import com.evalshell.bean.serializer.HomeRecommendSerializer;
@@ -162,5 +163,10 @@ public class HomeDaoImpl implements HomeService {
     @Override
     public void createImage(Image image) {
         homeService.createImage(image);
+    }
+
+    @Override
+    public CodeImage getSongCodeImageById(Integer id) {
+        return homeService.getSongCodeImageById(id);
     }
 }

@@ -1,6 +1,7 @@
 package com.evalshell.service;
 
 import com.evalshell.bean.model.*;
+import com.evalshell.bean.serializer.CodeImage;
 import com.evalshell.bean.serializer.FavouriteListSerializer;
 import com.evalshell.bean.serializer.HomeRecommendSerializer;
 
@@ -44,6 +45,8 @@ public interface HomeService {
     List<Song> searchSong(String name);
 
     Home getSongById(Integer id);
+
+    CodeImage getSongCodeImageById(Integer id);
 
     void createImage(Image image);
 

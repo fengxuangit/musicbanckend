@@ -5,10 +5,7 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.evalshell.bean.model.*;
 import com.evalshell.bean.model.Calendar;
-import com.evalshell.bean.serializer.FavouriteListSerializer;
-import com.evalshell.bean.serializer.HomeRecommendBase;
-import com.evalshell.bean.serializer.HomeRecommendSerializer;
-import com.evalshell.bean.serializer.SongResult;
+import com.evalshell.bean.serializer.*;
 import com.evalshell.config.WaterConfig;
 import com.evalshell.handler.WaterMark;
 import com.evalshell.service.CalendarService;
@@ -216,22 +213,33 @@ public class HomeController {
     @RequestMapping(value = "/getsong", method = {RequestMethod.GET})
     public Object getSongUrl(@RequestParam(value = "user_id") Integer user_id, @RequestParam(value = "id") Integer id){
         User user = userService.findUserById(user_id);
-        if (user != null && user.getIsvip() != 0){
-            //这里复用首页的序列化类·
-            Home home = homeService.getSongById(id);
-            PlayRecord playRecord = new PlayRecord();
-            playRecord.setUser_id(user_id);
-            playRecord.setSong_id(home.getSong().getId());
-            homeService.addPlayRecord(playRecord);
-            Integer count = homeService.findFavouriteById(user_id, home.getSong().getId());
-
-            SongResult songResult = new SongResult();
-            songResult.setHome(home);
-            songResult.setStatus(count);
-            return ResponseUtil.make_response(songResult, "success", 200);
+        Home home = homeService.getSongById(id);
+        if (home.getSong().getIsvip() == 1){
+            if (user.getIsvip() != 1){
+                return ResponseUtil.make_response(null, "你不是会员！", 100);
+            }
         }
-        return ResponseUtil.make_response(null, "你不是会员！", 100);
+        //这里复用首页的序列化类
+        PlayRecord playRecord = new PlayRecord();
+        playRecord.setUser_id(user_id);
+        playRecord.setSong_id(home.getSong().getId());
+        homeService.addPlayRecord(playRecord);
+        Integer count = homeService.findFavouriteById(user_id, home.getSong().getId());
+
+        SongResult songResult = new SongResult();
+        songResult.setHome(home);
+        songResult.setStatus(count);
+        return ResponseUtil.make_response(songResult, "success", 200);
+
     }
+
+    @RequestMapping(value = "/getsongshareimage", method = {RequestMethod.GET})
+    public Object getsongshareimage(@RequestParam(value = "user_id") Integer user_id, @RequestParam(value = "id") Integer id){
+        User user = userService.findUserById(user_id);
+        CodeImage codeImage = homeService.getSongCodeImageById(id);
+        return ResponseUtil.make_response(codeImage, "success", 200);
+    }
+
 
     @RequestMapping(value = "/getTemporarySong", method = {RequestMethod.GET})
     public Object getTemporarySong(@RequestParam(value = "user_id") Integer user_id, @RequestParam(value = "id") Integer id){
