@@ -69,6 +69,7 @@
             "key": "asda", # 图片key
             "url": "https://file.zuopin.cloud/Fsod1dlzAyQ2kIkhcidFwJ9WVqiX," # 图片url
         },
+        "post_image": "https://music.gitsort.com/image/%E6%B2%99%E6%BC%A0.jpg",#分享图片
         "date": "2021-09-11", # 日历的时间
         "word": "{\"word\":\"人世漫长得转瞬即逝，有人见尘埃，有人见星辰\",\"author\":\"小说家，毛姆\"}\n",
         "wordObject": {

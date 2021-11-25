@@ -11,6 +11,7 @@ public class Calendar {
     private int id;
     private Image image;
     private Integer image_id;
+    private String post_image;
     @JsonFormat(pattern="yyyy-MM-dd", timezone="GMT+8")
     private Date date;
     private String word;
